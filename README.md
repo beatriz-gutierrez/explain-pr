@@ -11,6 +11,11 @@ python3 -m pip install -r requirements.txt
 python3 main.py <owner> <repository> <pull_request_id>
 ```
 
+example (public repository):
+```bash
+python3 main.py kartones fg-viewer 24
+```
+
 
 # TODO:
 

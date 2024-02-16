@@ -1,3 +1,5 @@
+import sys
+
 # import json
 # from math import (ceil, floor)
 # from typing import Dict
@@ -111,11 +113,8 @@ def main(repo_owner: str, repo_name: str, pull_request_number: int):
 
 
 if __name__ == "__main__":
-    # TODO: read from args
-    repo_owner = "Kartones"
-    repo_name = "fg-viewer"
-    pull_request_number = 24
+    if len(sys.argv) < 4:
+        print("Usage: python main.py <repo_owner> <repo_name> <pull_request_number>")
+        sys.exit(1)
 
-    main(repo_owner, repo_name, pull_request_number)
-
-    # print(get_pull_request_data(repo_owner, repo_name, pull_request_number))
+    main(sys.argv[1], sys.argv[2], int(sys.argv[3]))
