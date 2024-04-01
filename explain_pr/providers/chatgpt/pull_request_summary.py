@@ -20,8 +20,7 @@ def summarize_pull_request(pull_request: str):
     Content: @@@{pull_request}@@@
     """
 
-    # TODO: use 'gpt-3.5-turbo' or 'gpt-3.5-turbo-16k'
-    model = "gpt-3.5-turbo-16k"
+    model = "gpt-3.5-turbo"
     messages = [{"role": "user", "content": prompt}]
     completion = openai.ChatCompletion.create(model=model, messages=messages, temperature=temperature)
 
