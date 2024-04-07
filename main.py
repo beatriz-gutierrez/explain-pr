@@ -7,7 +7,7 @@ import sys
 # import requests
 
 from explain_pr.providers.github.github_provider import GitHubProvider
-from explain_pr.providers.chatgpt.pull_request_summary import summarize_pull_request
+from explain_pr.adapters.pull_request_to_llm import summarize_pull_request
 
 # TODO: To be deleted once calculating sizes
 
@@ -115,17 +115,11 @@ def main(repo_owner: str, repo_name: str, pull_request_number: int):
     answer = input()
     if answer.lower() == "y":
         print("Summarizing pull request")
-        pull_request_content = f"""
-                            title": {pr_data.title}, 
-                            "description": {pr_data.description},
-                            "commit_messages": {pr_data.commit_messages},
-                            "file_changes": {pr_data.file_changes},
-                            """
-        summary = summarize_pull_request(pull_request_content)
+        summary = summarize_pull_request(pr_data, pr_analytics)
         print(summary)
 
 
-
+# example:  python main.py Kartones bazel-web-template 104
 if __name__ == "__main__":
     if len(sys.argv) < 4:
         print("Usage: python main.py <repo_owner> <repo_name> <pull_request_number>")
