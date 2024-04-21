@@ -1,8 +1,4 @@
 import openai
-from config import OPENAI_API_KEY
-
-from explain_pr.providers.github.pull_request_data import PullRequestData
-from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 
 SUMMARY_WORDS = 200
 

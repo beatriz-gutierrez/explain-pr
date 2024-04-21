@@ -7,7 +7,7 @@ import sys
 # import requests
 
 from explain_pr.providers.github.github_provider import GitHubProvider
-from explain_pr.adapters.pull_request_to_llm import summarize_pull_request
+from explain_pr.app import summarize_pull_request
 
 # TODO: To be deleted once calculating sizes
 
