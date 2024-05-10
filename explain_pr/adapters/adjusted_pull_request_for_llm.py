@@ -14,7 +14,8 @@ def get_max_text_per_context_window(n_tokens: int = MAX_TOKENS) -> int:
 
 
 def get_remaining_tokens_per_context_window(chars_used: int) -> int:
-    return (get_max_text_per_context_window() - chars_used) / 4
+  def get_remaining_tokens_per_context_window(chars_used: int, chars_per_token: int) -> int:
+      return MAX_TOKENS - (chars_used / chars_per_token)
 
 
 def adjust_patch_data_size(
