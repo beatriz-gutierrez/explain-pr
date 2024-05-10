@@ -1,7 +1,7 @@
 import openai
 
+MAX_TOKENS = 16000
 SUMMARY_WORDS = 200
-
 
 def get_pull_request_summary(pull_request_content: str) -> str:
     print("> Summarizing pull request")

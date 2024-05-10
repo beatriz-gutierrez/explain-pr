@@ -15,7 +15,7 @@ class PullRequestAnalytics:
     #               'filename_size': 9, 
     #               'status_size': 8, 
     #               'changes_patch_size': 524, 
-    #               'total_size': 541
+    #               'total_size': 5 n n nn41
     #           }, 
     #           ...
     #       ]

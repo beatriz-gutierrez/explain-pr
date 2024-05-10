@@ -1,7 +1,6 @@
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
-
-MAX_TOKENS = 16000
+from explain_pr.providers.chatgpt.chatggp_provider import MAX_TOKENS
 
 def get_max_code_per_context_window(n_tokens: int = MAX_TOKENS) -> int:
     # - 1 token is 2.5 characters for diffs and code
