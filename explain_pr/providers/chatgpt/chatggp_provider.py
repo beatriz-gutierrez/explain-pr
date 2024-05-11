@@ -1,10 +1,9 @@
 import openai
-from config import OPENAI_API_KEY
 
+MAX_TOKENS = 16000
 SUMMARY_WORDS = 200
 
-def summarize_pull_request(pull_request: str):
-    openai.api_key = OPENAI_API_KEY
+def get_pull_request_summary(pull_request_content: str) -> str:
     print("> Summarizing pull request")
 
     # no randomness
@@ -17,7 +16,7 @@ def summarize_pull_request(pull_request: str):
     In case of errors or bugs, add the code that implements the fix delimited by triple '''.
     Finally, add a conclusion with the impact of the changes in the codebase.
 
-    Content: @@@{pull_request}@@@
+    Content: @@@{pull_request_content}@@@
     """
 
     model = "gpt-3.5-turbo"
