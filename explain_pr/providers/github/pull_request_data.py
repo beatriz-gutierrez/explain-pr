@@ -8,12 +8,12 @@ Format of PullRequestData:
     'title': 'Update README.md',
     'description': 'Some description',
     'commit_messages': {
-        'commit_id1': 'commit_message1',
-        'commit_id2': 'commit_message2',
+        'commit1_sha': 'commit_message1',
+        'commit2_sha': 'commit_message2',
         ...
     },
     'file_changes': {
-        'commit_id1': [
+        'commit1_sha': [
             {
                 'filename': 'README.md',
                 'status': 'modified',
@@ -24,7 +24,7 @@ Format of PullRequestData:
             },
             ...
         ],
-        'commit_id2': [
+        'commit1_sha': [
             {
                 'filename': 'README.md',
                 'status': 'modified',
