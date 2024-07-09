@@ -21,6 +21,6 @@ def get_pull_request_summary(pull_request_content: str) -> str:
 
     model = "gpt-3.5-turbo"
     messages = [{"role": "user", "content": prompt}]
-    completion = openai.ChatCompletion.create(model=model, messages=messages, temperature=temperature)
+    completion = openai.chat.completions.create(model=model, messages=messages, temperature=temperature)
 
     return completion.choices[0].message.content
