@@ -24,7 +24,7 @@ Format of PullRequestData:
             },
             ...
         ],
-        'commit1_sha': [
+        'commit2_sha': [
             {
                 'filename': 'README.md',
                 'status': 'modified',
