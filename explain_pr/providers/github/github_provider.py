@@ -20,9 +20,9 @@ class GitHubProvider:
 
         title, description = self._get_pr_details(owner, repository, pr_number)
         commit_messages = self._get_commit_messages(owner, repository, pr_number)
-        file_changes = self._get_file_changes(owner, repository, pr_number)
+        commit_changes = self._get_commit_changes(owner, repository, pr_number)
 
-        pr_data = PullRequestData(title, description, commit_messages, file_changes)
+        pr_data = PullRequestData(title, description, commit_messages, commit_changes)
 
         pr_analytics = self._calculate_analytics(pr_data)
 
@@ -52,7 +52,7 @@ class GitHubProvider:
             for commit in commits_data
         }
 
-    def _get_file_changes(
+    def _get_commit_changes(
         self, owner: str, repository: str, pr_number: int
     ) -> Dict[str, List[Dict[str, Union[str, int]]]]:
         response = requests.get(
@@ -80,9 +80,7 @@ class GitHubProvider:
         description_size = len(pr_data.description)
         commit_messages_size = {key: len(value) for key, value in pr_data.commit_messages.items()} 
 
-        # print({key:len(f) if isinstance(f, str) else f for files in pr_data.file_changes.values()  for key, f in files.items()})
-
-        file_changes_size = {key:
+        commit_changes_size = {key:
             [
                 {
                     "filename_size": len(file["filename"]),
@@ -90,7 +88,7 @@ class GitHubProvider:
                     "changes_patch_size": len(file["changes_patch"]),
                     "total_size": len(file["filename"]) + len(file["status"]) + len(file["changes_patch"])
                 } 
-            ] for key, file in pr_data.file_changes.items() 
+            ] for key, file in pr_data.commit_changes.items() 
         }
        
-        return PullRequestAnalytics(title_size, description_size, commit_messages_size, file_changes_size)
+        return PullRequestAnalytics(title_size, description_size, commit_messages_size, commit_changes_size)

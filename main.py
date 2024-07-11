@@ -24,28 +24,28 @@ from explain_pr.app import summarize_pull_request
 # MAX_TOKENS_FOR_ALL_PATCHES = floor(TRESHOLD_FOR_ALL_PATCHES * MAX_TOKENS / 100)
 
 
-# def _count_all_patch_tokens(all_file_changes: Dict):
+# def _count_all_patch_tokens(all_commit_changes: Dict):
 #     total_tokens = 0
 
 #     tokens_per_file = {}
 
-#     for file_changes in all_file_changes:
-#         filename = file_changes['filename']
-#         tokens_per_file[filename] = ceil(len(file_changes['patch']) / CHARS_PER_TOKEN)
+#     for commit_changes in all_commit_changes:
+#         filename = commit_changes['filename']
+#         tokens_per_file[filename] = ceil(len(commit_changes['patch']) / CHARS_PER_TOKEN)
 #         total_tokens += tokens_per_file[filename]
 
 #     return total_tokens, tokens_per_file
 
 
-# def _file_changes(file_changes: Dict, can_have_full_patch: bool):
-#     data = f"Filename:{file_changes['filename']}\nStatus:{file_changes['status']}\n"
+# def _commit_changes(commit_changes: Dict, can_have_full_patch: bool):
+#     data = f"Filename:{commit_changes['filename']}\nStatus:{commit_changes['status']}\n"
 
 #     if can_have_full_patch:
-#         data += f"Changes patch: {file_changes['patch']}"
+#         data += f"Changes patch: {commit_changes['patch']}"
 #     else:
-#         data += f"Lines added:{file_changes['additions']}\n"
-#         data += f"Lines deleted:{file_changes['deletions']}\n"
-#         data += f"Lines changed:{file_changes['changes']}"
+#         data += f"Lines added:{commit_changes['additions']}\n"
+#         data += f"Lines deleted:{commit_changes['deletions']}\n"
+#         data += f"Lines changed:{commit_changes['changes']}"
 
 #     return data
 
@@ -93,9 +93,9 @@ from explain_pr.app import summarize_pull_request
 #     print(f"> Total tokens: {total_tokens}")
 #     print(f"> Tokens per file: {', '.join([f'{k}: {v}' for k, v in tokens_per_file.items()])}")
 
-#     file_changes = [_file_changes(file, full_patches) for file in files_data]
+#     commit_changes = [_commit_changes(file, full_patches) for file in files_data]
 
-#     return title, description, commit_messages, file_changes
+#     return title, description, commit_messages, commit_changes
 
 
 def main(repo_owner: str, repo_name: str, pull_request_number: int):
@@ -107,7 +107,7 @@ def main(repo_owner: str, repo_name: str, pull_request_number: int):
     print(f"Description: {pr_data.description}")
     print(f"Commit messages: {', '.join(pr_data.commit_messages)}")
     # print("File changes:")
-    # print(pr_data.file_changes)
+    # print(pr_data.commit_changes)
 
     print(pr_analytics)
 

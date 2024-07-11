@@ -12,7 +12,7 @@ Format of PullRequestData:
         'commit2_sha': 'commit_message2',
         ...
     },
-    'file_changes': {
+    'commit_changes': {
         'commit1_sha': [
             {
                 'filename': 'README.md',
@@ -46,4 +46,4 @@ class PullRequestData:
     description: str
    
     commit_messages: Dict[str, str] 
-    file_changes: Dict[str, List[Dict[str, Union[str, int]]]]
+    commit_changes: Dict[str, List[Dict[str, Union[str, int]]]]
