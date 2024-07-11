@@ -19,6 +19,6 @@ def summarize_pull_request(
                             title": {adjusted_pr_data.title}, 
                             "description": {adjusted_pr_data.description},
                             "commit_messages": {adjusted_pr_data.commit_messages},
-                            "file_changes": {adjusted_pr_data.file_changes},
+                            "commit_changes": {adjusted_pr_data.commit_changes},
                             """
     return get_pull_request_summary(pull_request_content)
