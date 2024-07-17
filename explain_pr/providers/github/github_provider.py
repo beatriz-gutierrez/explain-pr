@@ -1,6 +1,7 @@
 from typing import Tuple, Dict, List, Union
 
 import requests
+import hashlib
 
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
@@ -23,7 +24,7 @@ class GitHubProvider:
         commit_changes = self._get_commit_changes(owner, repository, pr_number)
 
         pr_data = PullRequestData(title, description, commit_messages, commit_changes)
-
+        breakpoint()
         pr_analytics = self._calculate_analytics(pr_data)
 
         return pr_data, pr_analytics
@@ -61,8 +62,9 @@ class GitHubProvider:
             timeout=self.DEFAULT_TIMEOUT
         )
         changes_data = response.json()
-
-        return {file["sha"]:
+        breakpoint()
+        return {
+            file["sha"]:
             {
                 # includes relative path
                 "filename": file["filename"],
@@ -80,15 +82,19 @@ class GitHubProvider:
         description_size = len(pr_data.description)
         commit_messages_size = {key: len(value) for key, value in pr_data.commit_messages.items()} 
 
-        commit_changes_size = {key:
-            [
-                {
-                    "filename_size": len(file["filename"]),
-                    "status_size": len(file["status"]),
-                    "changes_patch_size": len(file["changes_patch"]),
-                    "total_size": len(file["filename"]) + len(file["status"]) + len(file["changes_patch"])
-                } 
-            ] for key, file in pr_data.commit_changes.items() 
-        }
-       
+        commit_changes_size = {}
+        for key, value in pr_data.commit_changes.items():
+            for file in value:
+                breakpoint()
+                file_analytics = {}
+                file_analytics["commit_sha"] = key
+                file_analytics["filename"] = file["filename"]
+                file_analytics["filename_size"] = len(file["filename"])
+                file_analytics["status_size"] = len(file["status"])
+                file_analytics["changes_patch_size"] = len(file["changes_patch"])
+                file_analytics["total_size"] = len(file["filename"]) + len(file["status"]) + len(file["changes_patch"])
+
+                hash_key = hashlib.sha256(key.encode() + file["filename"].encode()).hexdigest()
+                commit_changes_size[hash_key] = file_analytics
+
         return PullRequestAnalytics(title_size, description_size, commit_messages_size, commit_changes_size)

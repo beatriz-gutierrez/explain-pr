@@ -16,28 +16,36 @@ Format of PullRequestAnalytics:
         ...
     },
     'commit_changes_size': {
-        'commit1_sha': [
+        'commit_i_filename_x_sha': 
             {
+                'commit_sha': 'commit_i_sha',
+                'filename': 'filename_y',
                 'filename_size': 9,
                 'status_size': 8,
                 'changes_patch_size': 524,
                 'total_size': 5
             },
-            ...
-        ],
-        'commit2_sha': [
+        'commit_i_filename_y_sha': 
             {
+                'commit_sha': 'commit_i_sha',
+                'filename': 'filename_y',
                 'filename_size': 9,
                 'status_size': 8,
                 'changes_patch_size': 524,
                 'total_size': 5
             },
-            ...
-        ],
+        'commit_j_filename_x_sha': 
+            {
+                'commit_sha': 'commit_i_sha',
+                'filename': 'filename_y',
+                'filename_size': 9,
+                'status_size': 8,
+                'changes_patch_size': 524,
+                'total_size': 5
+            },
         ...
     }
 }
-
 
 """
 @dataclass
@@ -46,4 +54,4 @@ class PullRequestAnalytics:
     description_size: int
 
     commit_messages_size: Dict[str, int] 
-    commit_changes_size: Dict[str, List[Dict[str, int]]] 
+    commit_changes_size: Dict[str, Dict[str, int]] 
