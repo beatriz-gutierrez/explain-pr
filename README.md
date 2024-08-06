@@ -16,6 +16,11 @@ example (public repository):
 python3 main.py kartones fg-viewer 24
 ```
 
+example (public repository):
+```bash
+python3 main.py kartones bazel-gazelle-sample-web-extension 6
+```
+
 
 # TODO:
 
