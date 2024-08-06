@@ -82,7 +82,6 @@ class GitHubProvider:
         files_changes_size = {}
         for key, value in pr_data.files_changes.items():
             files_changes_size[key] = {
-                #"filename": value["filename"],
                 "filename_size": len(value["filename"]),
                 "status_size": len(value["status"]),
                 "changes_patch_size": len(value["changes_patch"]),

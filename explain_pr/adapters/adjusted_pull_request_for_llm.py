@@ -25,7 +25,7 @@ def adjust_patch_data_size(
         + sum(pr_analytics.commit_messages_size.values())
     )
 
-    size_per_code = sum(
+    code_size = sum(
         [
             file["total_size"]
             for file in pr_analytics.files_changes_size.values()
@@ -42,7 +42,7 @@ def adjust_patch_data_size(
         print("> Adjusting patch data size -> removing description, commit messages and file changes.")
         return pr_data
 
-    remaining_code_size = get_max_code_chars_per_context_window(remaining_tokens)
+    remaining_max_code_size = get_max_code_chars_per_context_window(remaining_tokens)
 
     # order in acending order (to remove from dict easier)
     sorted_pr_analytics = dict(
@@ -52,11 +52,13 @@ def adjust_patch_data_size(
         )
     )
     pr_analytics.files_changes_size = sorted_pr_analytics
-
     # order by bigger size and remove until fits
-    while (size_per_code > remaining_code_size):
-
-        # remove the last insterted k-v pair that is the biggest file change
-        pr_analytics.files_changes_size.popitem()
+    while (
+        code_size > remaining_max_code_size and len(pr_analytics.files_changes_size) > 0
+    ):
+        # remove the k-v pair of the biggest file change
+        file_to_remove, file_to_remove_size  = pr_analytics.files_changes_size.popitem()
+        pr_data.files_changes.pop(file_to_remove)
+        code_size -= file_to_remove_size["total_size"]
 
     return pr_data
