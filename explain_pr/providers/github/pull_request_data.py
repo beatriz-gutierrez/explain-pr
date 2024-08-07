@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import (List, Dict, Union)
+from typing import Dict, Union
 
 
 """
@@ -12,29 +12,23 @@ Format of PullRequestData:
         'commit2_sha': 'commit_message2',
         ...
     },
-    'commit_changes': {
-        'commit1_sha': [
-            {
-                'filename': 'README.md',
-                'status': 'modified',
-                'changes_patch': "----",
-                'count_additions': 0,
-                'count_deletions': 1,
-                'count_changes': 1
-            },
-            ...
-        ],
-        'commit2_sha': [
-            {
-                'filename': 'README.md',
-                'status': 'modified',
-                'changes_patch': "----",
-                'count_additions': 0,
-                'count_deletions': 1,
-                'count_changes': 1
-            },
-            ...
-        ],
+    'files_changes': { # files changes in the PR
+        'file1_sha': {
+            'filename': 'README.md',
+            'status': 'modified',
+            'changes_patch': "----",
+            'count_additions': 0,
+            'count_deletions': 1,
+            'count_changes': 1
+        },
+        'file2_sha': {
+            'filename': 'README.md',
+            'status': 'modified',
+            'changes_patch': "----",
+            'count_additions': 0,
+            'count_deletions': 1,
+            'count_changes': 1
+        },
         ...
     }
 }
@@ -46,4 +40,4 @@ class PullRequestData:
     description: str
    
     commit_messages: Dict[str, str] 
-    commit_changes: Dict[str, List[Dict[str, Union[str, int]]]]
+    files_changes: Dict[str, Dict[str, Union[str, int]]]

@@ -1,9 +1,5 @@
 from dataclasses import dataclass
-from typing import (List, Dict)
-
-# id -> sha256(commit_sha + filename)
-#       commit_sha
-#       filename
+from typing import Dict
 
 """
 Format of PullRequestAnalytics:
@@ -15,29 +11,24 @@ Format of PullRequestAnalytics:
         'commit2_sha': 13,
         ...
     },
-    'commit_changes_size': {
-        'commit1_sha': [
+    'files_changes_size': {
+        'file_x_sha': 
             {
                 'filename_size': 9,
                 'status_size': 8,
                 'changes_patch_size': 524,
                 'total_size': 5
             },
-            ...
-        ],
-        'commit2_sha': [
+        'file_y_sha': 
             {
                 'filename_size': 9,
                 'status_size': 8,
                 'changes_patch_size': 524,
                 'total_size': 5
             },
-            ...
-        ],
         ...
     }
 }
-
 
 """
 @dataclass
@@ -46,4 +37,4 @@ class PullRequestAnalytics:
     description_size: int
 
     commit_messages_size: Dict[str, int] 
-    commit_changes_size: Dict[str, List[Dict[str, int]]] 
+    files_changes_size: Dict[str, Dict[str, int]] 
