@@ -21,10 +21,10 @@ Format of PullRequestAnalytics:
             },
         'file_y_sha': 
             {
-                'filename_size': 9,
-                'status_size': 8,
-                'changes_patch_size': 524,
-                'total_size': 5
+                'filename_size': 13,
+                'status_size': 2,
+                'changes_patch_size': 1444,
+                'total_size': 2000
             },
         ...
     }
