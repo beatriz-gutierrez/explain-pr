@@ -1,7 +1,7 @@
 import openai
 
-MAX_TOKENS = 16000
-SUMMARY_WORDS = 200
+MAX_TOKENS = 128 * 1000
+SUMMARY_WORDS = 500
 
 def get_pull_request_summary(pull_request_content: str) -> str:
     print("> Summarizing pull request")
@@ -19,7 +19,7 @@ def get_pull_request_summary(pull_request_content: str) -> str:
     Content: @@@{pull_request_content}@@@
     """
 
-    model = "gpt-3.5-turbo"
+    model = "gpt-4o-mini"
     messages = [{"role": "user", "content": prompt}]
     completion = openai.chat.completions.create(model=model, messages=messages, temperature=temperature)
 

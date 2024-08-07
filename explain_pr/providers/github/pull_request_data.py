@@ -22,7 +22,7 @@ Format of PullRequestData:
             'count_changes': 1
         },
         'file2_sha': {
-            'filename': 'README.md',
+            'filename': '.gitignore',
             'status': 'modified',
             'changes_patch': "----",
             'count_additions': 0,

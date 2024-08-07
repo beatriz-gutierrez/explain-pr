@@ -44,7 +44,7 @@ def adjust_patch_data_size(
 
     remaining_max_code_size = get_max_code_chars_per_context_window(remaining_tokens)
 
-    # order in acending order (to remove from dict easier)
+    # order in acending order for performance
     sorted_pr_analytics = dict(
         sorted(
             pr_analytics.files_changes_size.items(),
@@ -52,6 +52,8 @@ def adjust_patch_data_size(
         )
     )
     pr_analytics.files_changes_size = sorted_pr_analytics
+
+    print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
     # order by bigger size and remove until fits
     while (
         code_size > remaining_max_code_size and len(pr_analytics.files_changes_size) > 0
@@ -60,5 +62,6 @@ def adjust_patch_data_size(
         file_to_remove, file_to_remove_size  = pr_analytics.files_changes_size.popitem()
         pr_data.files_changes.pop(file_to_remove)
         code_size -= file_to_remove_size["total_size"]
+        print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
     return pr_data
