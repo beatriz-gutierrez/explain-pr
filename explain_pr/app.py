@@ -9,11 +9,11 @@ from explain_pr.adapters.adjusted_pull_request_for_llm import adjust_patch_data_
 openai.api_key = OPENAI_API_KEY
 
 def summarize_pull_request(
-    pr_data: PullRequestData, pr_analytics: PullRequestAnalytics
+    pr_data: PullRequestData, pr_analytics: PullRequestAnalytics, max_tokens: int
 ) -> str:
     
     # check size and reduce if more than MAX_CHARS
-    adjusted_pr_data = adjust_patch_data_size(pr_data, pr_analytics)
+    adjusted_pr_data = adjust_patch_data_size(pr_data, pr_analytics, max_tokens)
 
     pull_request_content = f"""
                             title": {adjusted_pr_data.title}, 
