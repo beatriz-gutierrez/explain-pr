@@ -43,11 +43,12 @@ def adjust_patch_data_size(
     remaining_max_code_size = _get_max_code_chars_per_context_window(remaining_tokens)
     print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
-    # order in ascending order for start removing from zero index
+    # order in descending order for start removing from zero index
     sorted_pr_analytics = dict(
         sorted(
             pr_analytics.files_changes_size.items(),
             key=lambda x: x[1]["changes_patch_size"],
+            reverse=True
         )
     )
     pr_analytics.files_changes_size = sorted_pr_analytics
