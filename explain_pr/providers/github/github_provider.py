@@ -1,17 +1,10 @@
 from typing import Tuple, Dict, Union
-import sys
 
 import requests
 
+from explain_pr.config import GITHUB_PERSONAL_ACCESS_TOKEN
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
-
-try:
-    from explain_pr.config import GITHUB_PERSONAL_ACCESS_TOKEN
-except:
-    print("Could not find the `config.py` file inside `explain_pr` folder.")
-    print("Please follow the README instructions to create one.")
-    sys.exit(1)
 
 
 class GitHubProvider:

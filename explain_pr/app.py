@@ -1,6 +1,15 @@
+import sys
+
 import openai
 
-from explain_pr.config import OPENAI_API_KEY
+# Only performing the check for existing config file here, as this is the main application entry point
+try:
+    from explain_pr.config import OPENAI_API_KEY
+except:
+    print("Could not find the `config.py` file inside `explain_pr` folder.")
+    print("Please follow the README instructions to create one.")
+    sys.exit(1)
+
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 from explain_pr.providers.chatgpt.chatggp_provider import get_pull_request_summary
