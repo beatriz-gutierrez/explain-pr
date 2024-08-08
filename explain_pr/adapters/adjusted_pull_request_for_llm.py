@@ -1,12 +1,12 @@
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 
-def _get_max_code_chars_per_context_window(n_tokens) -> int:
+def _get_max_code_chars_per_context_window(n_tokens: int) -> int:
     # - 1 token is 2.5 characters for diffs and code
     return n_tokens * 2.5
 
 
-def _get_max_text_chars_per_context_window(n_tokens) -> int:
+def _get_max_text_chars_per_context_window(n_tokens: int) -> int:
     # - 1 token is 4 characters for English text
     return n_tokens * 4
 
@@ -43,28 +43,28 @@ def adjust_patch_data_size(
     remaining_max_code_size = _get_max_code_chars_per_context_window(remaining_tokens)
     print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
+    # order in ascending order for start removing from zero index
+    sorted_pr_analytics = dict(
+        sorted(
+            pr_analytics.files_changes_size.items(),
+            key=lambda x: x[1]["changes_patch_size"],
+        )
+    )
+    pr_analytics.files_changes_size = sorted_pr_analytics
+
+    remove_index = 0
     # order by bigger size and remove until fits
     while (
-        code_size > remaining_max_code_size 
+        code_size > remaining_max_code_size  and remove_index < len(pr_analytics.files_changes_size)
     ):
-
-        # order in descending order for removing the changes_path with bigger size
-        sorted_pr_analytics = dict(
-            sorted(
-                pr_analytics.files_changes_size.items(),
-                key=lambda x: x[1]["changes_patch_size"],
-                reverse=True,
-            )
-        )
-        pr_analytics.files_changes_size = sorted_pr_analytics
-
         # remove the k-v pair of the biggest file change
-        file_to_remove, file_to_remove_size  = list(pr_analytics.files_changes_size.items())[0]
+        file_to_remove, file_to_remove_size  = list(pr_analytics.files_changes_size.items())[remove_index]
         pr_data.files_changes[file_to_remove]["changes_patch"] = ""
         code_size -= file_to_remove_size["changes_patch_size"]
 
         pr_analytics.files_changes_size[file_to_remove]["changes_patch_size"] = 0
-       
+        remove_index += 1
+
         print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
     return pr_data
