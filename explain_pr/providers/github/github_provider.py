@@ -1,8 +1,8 @@
 from typing import Tuple, Dict, Union
 
 import requests
-import hashlib
 
+from explain_pr.config import GITHUB_PERSONAL_ACCESS_TOKEN
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 
@@ -10,7 +10,8 @@ from explain_pr.providers.github.pull_request_analytics import PullRequestAnalyt
 class GitHubProvider:
     BASE_URL = "https://api.github.com"
     BASE_HEADERS = {
-        "Accept": "application/vnd.github.v3+json"
+        "Accept": "application/vnd.github.v3+json",
+        "Authorization": f"Bearer {GITHUB_PERSONAL_ACCESS_TOKEN}",
     }
     DEFAULT_TIMEOUT = 60  # seconds
 
@@ -77,7 +78,7 @@ class GitHubProvider:
     def _calculate_analytics(self, pr_data: PullRequestData) -> PullRequestAnalytics:
         title_size = len(pr_data.title)
         description_size = len(pr_data.description)
-        commit_messages_size = {key: len(value) for key, value in pr_data.commit_messages.items()} 
+        commit_messages_size = {key: len(value) for key, value in pr_data.commit_messages.items()}
 
         files_changes_size = {}
         for key, value in pr_data.files_changes.items():
@@ -92,7 +93,7 @@ class GitHubProvider:
                 ),
             }
 
-        return PullRequestAnalytics(title_size, 
-                                    description_size, 
-                                    commit_messages_size, 
+        return PullRequestAnalytics(title_size,
+                                    description_size,
+                                    commit_messages_size,
                                     files_changes_size)

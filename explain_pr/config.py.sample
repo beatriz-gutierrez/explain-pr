@@ -1,0 +1,10 @@
+# Setup yours here: https://platform.openai.com/api-keys
+OPENAI_API_KEY = ""
+
+# Setup yours here: https://github.com/settings/tokens
+# WARNINGS:
+# - Do not share this token
+# - Tested with "Classic token"
+# - Set an expiration date for the token (Github allows for up to 1 year)
+# - Set the allowed scopes to only: `repo -> repo:status` and `repo -> public_repo`
+GITHUB_PERSONAL_ACCESS_TOKEN = ""

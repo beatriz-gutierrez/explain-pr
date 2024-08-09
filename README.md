@@ -5,6 +5,8 @@
 python3 -m pip install -r requirements.txt
 ```
 
+Copy `explain_pr/config.py.sample` to `explain_pr/config.py`, and fill the settings (explained inside the file).
+
 ## run
 
 ```bash
@@ -16,7 +18,7 @@ example (public repository):
 python3 main.py kartones fg-viewer 24
 ```
 
-example (public repository):
+example (public repository, multiple commits editing at least one file two times):
 ```bash
 python3 main.py kartones bazel-gazelle-sample-web-extension 6
 ```
