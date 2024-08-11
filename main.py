@@ -13,12 +13,14 @@ def main(repo_owner: str, repo_name: str, pull_request_number: int, max_tokens: 
     print(f"Title: {pr_data.title}")
     print(f"Description: {pr_data.description}")
 
+    pr_url = f"https://github.com/{repo_owner}/{repo_name}/pull/{pull_request_number}"
+
     print("Do you want to summarize the pull request? (y/n)")
     answer = input()
     if answer.lower() == "y":
-        print("Summarizing pull request")
-        summary = summarize_pull_request(pr_data, pr_analytics, max_tokens)
-        print(summary)
+        print("Summarizing pull request...")
+        summary_file = summarize_pull_request(pr_data, pr_analytics, pr_url, max_tokens)
+        print(f"Summary saved to `{summary_file}`")
 
 
 if __name__ == "__main__":
