@@ -5,6 +5,12 @@
 python3 -m pip install -r requirements.txt
 ```
 
+If you are going to test:
+```bash
+python3 -m pip install -r requirements-dev.txt
+```
+
+
 Copy `explain_pr/config.py.sample` to `explain_pr/config.py`, and fill the settings (explained inside the file).
 
 ## run
@@ -23,6 +29,8 @@ example (public repository, multiple commits editing at least one file two times
 python3 main.py kartones bazel-gazelle-sample-web-extension 6
 ```
 
+## test
+TODO
 
 # TODO:
 
