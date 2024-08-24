@@ -160,7 +160,7 @@ cython_debug/
 #.idea/
 
 
-venv_explainPR/
+venv_explain_pr/
 config.py
 temp/
 summary.html
