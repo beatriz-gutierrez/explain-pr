@@ -9,11 +9,6 @@ def _get_max_code_chars_per_context_window(n_tokens: int) -> int:
     return math.floor(n_tokens * 2.5)
 
 
-def _get_max_text_chars_per_context_window(n_tokens: int) -> int:
-    # - 1 token is 4 characters for English text
-    return n_tokens * 4
-
-
 def _get_remaining_tokens_per_context_window(chars_used: int, chars_per_token: int, max_tokens: int) -> int:
     return max_tokens - math.floor(chars_used / chars_per_token)
 
