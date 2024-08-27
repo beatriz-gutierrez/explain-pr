@@ -9,6 +9,11 @@ def _get_max_code_chars_per_context_window(n_tokens: int) -> int:
     return math.floor(n_tokens * 2.5)
 
 
+def _get_max_text_chars_per_context_window(n_tokens: int) -> int:
+    # - 1 token is 4 characters for English text
+    return n_tokens * 4
+
+
 def _get_remaining_tokens_per_context_window(chars_used: int, chars_per_token: int, max_tokens: int) -> int:
     return max_tokens - math.floor(chars_used / chars_per_token)
 
@@ -20,21 +25,19 @@ def adjust_patch_data_size(
         + pr_analytics.description_size
         + sum(pr_analytics.commit_messages_size.values())
     )
-
     code_size = sum(
         [
             file["total_size"]
             for file in pr_analytics.files_changes_size.values()
         ]
     )
-
     remaining_tokens = _get_remaining_tokens_per_context_window(size_per_text, 4, max_tokens)
     # if PR so big, leave only title
     if remaining_tokens <= 0:
         remaining_tokens = 0
         pr_data.description = ""
-        pr_data.commit_messages = []
-        pr_data.commit_changes = []
+        pr_data.commit_messages = {}
+        pr_data.files_changes = {}
         print("> Adjusting patch data size -> removing description, commit messages and file changes.")
         return pr_data
 
@@ -65,5 +68,4 @@ def adjust_patch_data_size(
         remove_index += 1
 
         print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
-
     return pr_data
