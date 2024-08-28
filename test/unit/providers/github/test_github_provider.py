@@ -52,6 +52,7 @@ class TestGitHubProvider:
                             "changes": 1,
                             "patch": "----",
                         },
+                        {
                             "sha": "456",
                             "filename": ".gitignore",
                             "status": "modified",
@@ -64,7 +65,7 @@ class TestGitHubProvider:
                 )
             ),
         ]
-        
+
         self.mock_request_get.side_effect = responses
 
     @pytest.fixture(autouse=True)
@@ -89,11 +90,11 @@ class TestGitHubProvider:
         assert pr_data.title == "PR Title"
         assert pr_data.description == "PR Description"
         assert pr_data.commit_messages == {
-            "commit1_sha": "commit_message1",
-            "commit2_sha": "commit_message2",
+            "123": "commit_message1",
+            "456": "commit_message2",
         }
         assert pr_data.files_changes == {
-            "file1_sha": {
+            "123": {
                 "filename": "README.md",
                 "status": "modified",
                 "changes_patch": "----",
@@ -101,7 +102,7 @@ class TestGitHubProvider:
                 "count_deletions": 1,
                 "count_changes": 1,
             },
-            "file2_sha": {
+            "456": {
                 "filename": ".gitignore",
                 "status": "modified",
                 "changes_patch": "--------",
@@ -111,26 +112,48 @@ class TestGitHubProvider:
             },
         }
         assert self.mock_request_get.call_count == 3
-        self.mock_request_get.assert_any_call(expected_urls[0])
-        self.mock_request_get.assert_any_call(expected_urls[1])
-        self.mock_request_get.assert_any_call(expected_urls[2])
+        self.mock_request_get.assert_any_call(
+            expected_urls[2],
+            headers={
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": "Bearer ",
+            },
+            timeout=60,
+        )
+        self.mock_request_get.assert_any_call(
+            expected_urls[1],
+            headers={
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": "Bearer ",
+            },
+            timeout=60,
+        )
+        self.mock_request_get.assert_any_call(
+            expected_urls[0],
+            headers={
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": "Bearer ",
+            },
+            timeout=60,
+        )
+
         assert pr_analytics.title_size == len("PR Title")
         assert pr_analytics.description_size == len("PR Description")
         assert pr_analytics.commit_messages_size == {
-            "commit1_sha": 15,
-            "commit2_sha": 15,
+            "123": 15,
+            "456": 15,
         }
         assert pr_analytics.files_changes_size == {
-            "file_x_sha": {
+            "123": {
                 "filename_size": 9,
                 "status_size": 8,
                 "changes_patch_size": 4,
                 "total_size": 21,
             },
-            "file_y_sha": {
-                "filename_size": 13,
+            "456": {
+                "filename_size": 10,
                 "status_size": 8,
                 "changes_patch_size": 8,
-                "total_size": 29,
+                "total_size": 26,
             },
         }
