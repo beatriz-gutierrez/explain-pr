@@ -2,8 +2,8 @@ import pytest
 from unittest.mock import MagicMock
 import os
 import sys
-print("PATH1", os.path.abspath(os.path.join(os.path.dirname(__file__))))
-print("PATH2", os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
+
+
 # Add the root directory of the project to the Python path
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
