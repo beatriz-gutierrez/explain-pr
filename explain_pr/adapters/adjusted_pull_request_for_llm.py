@@ -39,7 +39,7 @@ def adjust_patch_data_size(
         remaining_tokens = 0
         pr_data.description = ""
         pr_data.commit_messages = []
-        pr_data.commit_changes = []
+        pr_data.files_changes = []
         print("> Adjusting patch data size -> removing description, commit messages and file changes.")
         return pr_data
 

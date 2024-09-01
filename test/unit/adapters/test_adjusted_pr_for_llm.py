@@ -1,5 +1,13 @@
 import pytest
 from unittest.mock import MagicMock
+import os
+import sys
+print("PATH1", os.path.abspath(os.path.join(os.path.dirname(__file__))))
+print("PATH2", os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
+# Add the root directory of the project to the Python path
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+)
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 from explain_pr.adapters.adjusted_pull_request_for_llm import adjust_patch_data_size

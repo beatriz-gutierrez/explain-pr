@@ -72,7 +72,7 @@ class TestGitHubProvider:
     def teardown_function(self):
         self.mock_request_get.reset_mock()
 
-    def test_get_pull_requestr_data_with_valid_pr_number(self):
+    def test_get_pull_request_data_with_valid_pr_number(self):
         # Arrange
         git_provider = GitHubProvider()
         expected_urls = [
@@ -80,6 +80,7 @@ class TestGitHubProvider:
             "https://api.github.com/repos/owner1/repository1/pulls/1/commits",
             "https://api.github.com/repos/owner1/repository1/pulls/1/files",
         ]
+        self.mock_request_get.url.side_effect = expected_urls[:3]
 
         # Act
         pr_data, pr_analytics = git_provider.get_pull_request_data(
@@ -113,10 +114,10 @@ class TestGitHubProvider:
         }
         assert self.mock_request_get.call_count == 3
         self.mock_request_get.assert_any_call(
-            expected_urls[2],
+            expected_urls[0],
             headers={
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer ",
+                "Authorization": "Bearer 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",
             },
             timeout=60,
         )
@@ -124,7 +125,7 @@ class TestGitHubProvider:
             expected_urls[1],
             headers={
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer ",
+                "Authorization": "Bearer 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",
             },
             timeout=60,
         )
@@ -132,7 +133,7 @@ class TestGitHubProvider:
             expected_urls[0],
             headers={
                 "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer ",
+                "Authorization": "Bearer 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",
             },
             timeout=60,
         )
