@@ -8,3 +8,6 @@ OPENAI_API_KEY = ""
 # - Set an expiration date for the token (Github allows for up to 1 year)
 # - Set the allowed scopes to only: `repo -> repo:status` and `repo -> public_repo`
 GITHUB_PERSONAL_ACCESS_TOKEN = ""
+
+# Extra verbosity, and store some intermediate content (like the summary markdown before conversion)
+DEBUG = True

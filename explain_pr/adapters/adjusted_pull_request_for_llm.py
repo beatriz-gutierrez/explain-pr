@@ -1,5 +1,6 @@
 import math
 
+from explain_pr.config import DEBUG
 from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
 
@@ -39,7 +40,8 @@ def adjust_patch_data_size(
         return pr_data
 
     remaining_max_code_size = _get_max_code_chars_per_context_window(remaining_tokens)
-    print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
+    if DEBUG:
+        print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
     # order in descending order for start removing from zero index
     sorted_pr_analytics = dict(
@@ -64,6 +66,7 @@ def adjust_patch_data_size(
         pr_analytics.files_changes_size[file_to_remove]["changes_patch_size"] = 0
         remove_index += 1
 
-        print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
+        if DEBUG:
+            print(f"CODE SIZE: {code_size} REMAINING MAX CODE SIZE: {remaining_max_code_size}")
 
     return pr_data

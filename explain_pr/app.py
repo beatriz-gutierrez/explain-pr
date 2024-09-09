@@ -4,7 +4,10 @@ import openai
 
 # Only performing the check for existing config file here, as this is the main application entry point
 try:
-    from explain_pr.config import OPENAI_API_KEY
+    from explain_pr.config import (
+        DEBUG,
+        OPENAI_API_KEY,
+    )
 except:
     print("Could not find the `config.py` file inside `explain_pr` folder.")
     print("Please follow the README instructions to create one.")
@@ -41,8 +44,14 @@ def summarize_pull_request(
 def _convert_and_save_summary(summary: str, pr_url: str, title: str) -> str:
     summary_html = markdown_to_html(summary, pr_url, title)
 
-    output_filename = "summary.html"
-    with open(output_filename, "w+t", encoding="utf-8") as file_handle:
+    filename = "summary"
+
+    if DEBUG:
+        with open(f"{filename}.md", "wt", encoding="utf-8") as file_handle:
+            file_handle.write(summary)
+
+    output_filename = f"{filename}.html"
+    with open(output_filename, "wt", encoding="utf-8") as file_handle:
         file_handle.write(summary_html)
 
     return output_filename
