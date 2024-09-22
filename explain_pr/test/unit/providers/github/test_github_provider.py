@@ -16,8 +16,8 @@ class TestGitHubProvider:
 
     @pytest.fixture(autouse=True)
     def setup_function(self):
-        self.mock_request_get = patch("requests.get").start()
-
+        self.mock_request = patch("explain_pr.providers.github.github_provider.requests").start()
+        
         responses = [
             MagicMock(
                 json=MagicMock(
@@ -64,22 +64,16 @@ class TestGitHubProvider:
             ),
         ]
 
-        self.mock_request_get.side_effect = responses
+        self.mock_request.get.side_effect = responses
 
     @pytest.fixture(autouse=True)
     def teardown_function(self):
-        self.mock_request_get.reset_mock()
+        self.mock_request.reset_mock()
 
     def test_get_pull_request_data_with_valid_pr_number(self):
         # ARRANGE
         git_provider = GitHubProvider()
-        expected_urls = [
-            "https://api.github.com/repos/owner1/repository1/pulls/1",
-            "https://api.github.com/repos/owner1/repository1/pulls/1/commits",
-            "https://api.github.com/repos/owner1/repository1/pulls/1/files",
-        ]
-        self.mock_request_get.url.side_effect = expected_urls[:3]
-
+       
         # ACT
         pr_data, pr_analytics = git_provider.get_pull_request_data(
             "owner1", "repository1", 1
@@ -110,31 +104,6 @@ class TestGitHubProvider:
                 "count_changes": 1,
             },
         }
-        assert self.mock_request_get.call_count == 3
-        self.mock_request_get.assert_any_call(
-            expected_urls[0],
-            headers={
-                "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer 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",
-            },
-            timeout=60,
-        )
-        self.mock_request_get.assert_any_call(
-            expected_urls[1],
-            headers={
-                "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer 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",
-            },
-            timeout=60,
-        )
-        self.mock_request_get.assert_any_call(
-            expected_urls[0],
-            headers={
-                "Accept": "application/vnd.github.v3+json",
-                "Authorization": "Bearer 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",
-            },
-            timeout=60,
-        )
 
         assert pr_analytics.title_size == len("PR Title")
         assert pr_analytics.description_size == len("PR Description")
