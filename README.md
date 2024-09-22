@@ -2,29 +2,45 @@
 ## Setup
 
 ```bash
-python3 -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
+```
+
+For testing purposes, use:
+```bash
+python -m pip install -r requirements-dev.txt
 ```
 
 Copy `explain_pr/config.py.sample` to `explain_pr/config.py`, and fill the settings (explained inside the file).
 
-## run
+## Run
 
 ```bash
-python3 main.py <owner> <repository> <pull_request_id>
+python main.py <owner> <repository> <pull_request_id>
 ```
 
 example (public repository):
 ```bash
-python3 main.py kartones fg-viewer 24
+python main.py kartones fg-viewer 24
 ```
 
 example (public repository, multiple commits editing at least one file two times):
 ```bash
-python3 main.py kartones bazel-gazelle-sample-web-extension 6
+python main.py kartones bazel-gazelle-sample-web-extension 6
 ```
 
+## Testing
 
-# TODO:
+To run all tests:
+```bash
+python -m pytest 
+```
 
-https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api?apiVersion=2022-11-28
-example: https://github.com/Kartones/fg-viewer/pull/24/files
+To run a specific test class:
+```bash
+python -m pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py
+```
+
+To run a specific unit test:
+```bash
+python -m pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py::TestAdjustedPullRequestForLlm::test_adjust_patch_data_size_with_pr_smaller_than_limit
+```
