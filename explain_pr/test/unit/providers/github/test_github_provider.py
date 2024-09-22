@@ -71,7 +71,7 @@ class TestGitHubProvider:
         self.mock_request_get.reset_mock()
 
     def test_get_pull_request_data_with_valid_pr_number(self):
-        # Arrange
+        # ARRANGE
         git_provider = GitHubProvider()
         expected_urls = [
             "https://api.github.com/repos/owner1/repository1/pulls/1",
@@ -80,12 +80,12 @@ class TestGitHubProvider:
         ]
         self.mock_request_get.url.side_effect = expected_urls[:3]
 
-        # Act
+        # ACT
         pr_data, pr_analytics = git_provider.get_pull_request_data(
             "owner1", "repository1", 1
         )
 
-        # Assert
+        # ASSERT
         assert pr_data.title == "PR Title"
         assert pr_data.description == "PR Description"
         assert pr_data.commit_messages == {
