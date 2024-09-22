@@ -32,15 +32,15 @@ python main.py kartones bazel-gazelle-sample-web-extension 6
 
 To run all tests:
 ```bash
-pytest 
+python -m pytest 
 ```
 
 To run a specific test class:
 ```bash
-pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py
+python -m pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py
 ```
 
 To run a specific unit test:
 ```bash
-pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py::TestAdjustedPullRequestForLlm::test_adjust_patch_data_size_with_pr_smaller_than_limit
+python -m pytest explain_pr/test/unit/adapters/test_adjusted_pr_for_llm.py::TestAdjustedPullRequestForLlm::test_adjust_patch_data_size_with_pr_smaller_than_limit
 ```
