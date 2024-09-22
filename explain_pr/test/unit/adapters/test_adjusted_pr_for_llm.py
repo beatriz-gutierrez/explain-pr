@@ -69,7 +69,7 @@ class TestAdjustedPullRequestForLlm:
         self.mock_pull_request_data.reset_mock()
         self.mock_pull_request_analytics.reset_mock()
 
-    def test_adjust_patch_data_size_with_pr_smaller_than_limit(self):
+    def test_adjust_patch_data_size_with_pr_smaller_than_limit_will_not_adjustt(self):
         # ARRANGE
         max_tokens = 100000
 
@@ -90,7 +90,7 @@ class TestAdjustedPullRequestForLlm:
             == 0
         )
 
-    def test_adjust_patch_data_size_with_pr_bigger_than_limit_than_skip_all_changes(self):
+    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_all_changes(self):
         # ARRANGE
         max_tokens = 10
 
@@ -105,7 +105,7 @@ class TestAdjustedPullRequestForLlm:
         assert not result.commit_messages 
         assert not result.files_changes 
 
-    def test_adjust_patch_data_size_with_pr_bigger_than_limit_than_skip_some_changes_patch(self):
+    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_some_changes_patch(self):
         # ARRANGE
         max_tokens = 50
 
