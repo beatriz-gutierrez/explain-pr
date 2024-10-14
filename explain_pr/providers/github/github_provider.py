@@ -1,10 +1,10 @@
-from typing import Tuple, Dict, Union
+from typing import Dict, Tuple, Union
 
 import requests
 
 from explain_pr.config import GITHUB_PERSONAL_ACCESS_TOKEN
-from explain_pr.providers.github.pull_request_data import PullRequestData
 from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
+from explain_pr.providers.github.pull_request_data import PullRequestData
 
 
 class GitHubProvider:
@@ -15,8 +15,9 @@ class GitHubProvider:
     }
     DEFAULT_TIMEOUT = 60  # seconds
 
-    def get_pull_request_data(self, owner: str, repository: str, pr_number: int) -> \
-            Tuple[PullRequestData, PullRequestAnalytics]:  # noqa: E501
+    def get_pull_request_data(
+        self, owner: str, repository: str, pr_number: int
+    ) -> Tuple[PullRequestData, PullRequestAnalytics]:  # noqa: E501
 
         print(f"> Getting data for https://github.com/{owner}/{repository}/pull/{pr_number}/")
 
@@ -35,7 +36,7 @@ class GitHubProvider:
         response = requests.get(
             f"{self.BASE_URL}/repos/{owner}/{repository}/pulls/{pr_number}",
             headers=self.BASE_HEADERS,
-            timeout=self.DEFAULT_TIMEOUT
+            timeout=self.DEFAULT_TIMEOUT,
         )
         pr_data = response.json()
         return pr_data["title"], pr_data["body"]
@@ -44,35 +45,29 @@ class GitHubProvider:
         response = requests.get(
             f"{self.BASE_URL}/repos/{owner}/{repository}/pulls/{pr_number}/commits",
             headers=self.BASE_HEADERS,
-            timeout=self.DEFAULT_TIMEOUT
+            timeout=self.DEFAULT_TIMEOUT,
         )
         commits_data = response.json()
-        return {
-            commit["sha"]: commit["commit"]["message"]
-            for commit in commits_data
-        }
+        return {commit["sha"]: commit["commit"]["message"] for commit in commits_data}
 
-    def _get_commit_changes(
-        self, owner: str, repository: str, pr_number: int
-    ) -> Dict[str, Dict[str, Union[str, int]]]:
+    def _get_commit_changes(self, owner: str, repository: str, pr_number: int) -> Dict[str, Dict[str, Union[str, int]]]:
         response = requests.get(
             f"{self.BASE_URL}/repos/{owner}/{repository}/pulls/{pr_number}/files",
             headers=self.BASE_HEADERS,
-            timeout=self.DEFAULT_TIMEOUT
+            timeout=self.DEFAULT_TIMEOUT,
         )
         changes_data = response.json()
         return {
-            file["sha"]:
-            {
+            file["sha"]: {
                 # includes relative path
                 "filename": file["filename"],
                 "status": file["status"],
                 "changes_patch": file["patch"] if "patch" in file else "",
                 "count_additions": file["additions"],
                 "count_deletions": file["deletions"],
-                "count_changes": file["changes"]
-
-            } for file in changes_data
+                "count_changes": file["changes"],
+            }
+            for file in changes_data
         }
 
     def _calculate_analytics(self, pr_data: PullRequestData) -> PullRequestAnalytics:
@@ -80,20 +75,15 @@ class GitHubProvider:
         description_size = len(pr_data.description)
         commit_messages_size = {key: len(value) for key, value in pr_data.commit_messages.items()}
 
-        files_changes_size = {}
+        files_changes_size: Dict[str, Dict[str, int]] = {}
         for key, value in pr_data.files_changes.items():
             files_changes_size[key] = {
-                "filename_size": len(value["filename"]),
-                "status_size": len(value["status"]),
-                "changes_patch_size": len(value["changes_patch"]),
+                "filename_size": len(str(value["filename"])),
+                "status_size": len(str(value["status"])),
+                "changes_patch_size": len(str(value["changes_patch"])),
                 "total_size": (
-                    len(value["filename"])
-                    + len(value["status"])
-                    + len(value["changes_patch"])
+                    len(str(value["filename"])) + len(str(value["status"])) + len(str(value["changes_patch"]))
                 ),
             }
 
-        return PullRequestAnalytics(title_size,
-                                    description_size,
-                                    commit_messages_size,
-                                    files_changes_size)
+        return PullRequestAnalytics(title_size, description_size, commit_messages_size, files_changes_size)
