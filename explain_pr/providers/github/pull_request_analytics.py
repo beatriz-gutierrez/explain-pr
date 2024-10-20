@@ -12,14 +12,14 @@ Format of PullRequestAnalytics:
         ...
     },
     'files_changes_size': {
-        'file_x_sha': 
+        'file_x_sha':
             {
                 'filename_size': 9,
                 'status_size': 8,
                 'changes_patch_size': 524,
                 'total_size': 5
             },
-        'file_y_sha': 
+        'file_y_sha':
             {
                 'filename_size': 13,
                 'status_size': 2,
@@ -31,10 +31,12 @@ Format of PullRequestAnalytics:
 }
 
 """
+
+
 @dataclass
 class PullRequestAnalytics:
     title_size: int
     description_size: int
 
-    commit_messages_size: Dict[str, int] 
-    files_changes_size: Dict[str, Dict[str, int]] 
+    commit_messages_size: Dict[str, int]
+    files_changes_size: Dict[str, Dict[str, int]]

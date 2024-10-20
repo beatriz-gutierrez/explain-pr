@@ -1,14 +1,13 @@
 import sys
 
-from explain_pr.providers.github.github_provider import GitHubProvider
 from explain_pr.app import summarize_pull_request
 from explain_pr.providers.chatgpt.chatggp_provider import MAX_TOKENS
+from explain_pr.providers.github.github_provider import GitHubProvider
 
 
 def main(repo_owner: str, repo_name: str, pull_request_number: int, max_tokens: int):
     gh_provider = GitHubProvider()
-    pr_data, pr_analytics = gh_provider.get_pull_request_data(
-        repo_owner, repo_name, pull_request_number)
+    pr_data, pr_analytics = gh_provider.get_pull_request_data(repo_owner, repo_name, pull_request_number)
 
     print(f"Title: {pr_data.title}")
     print(f"Description: {pr_data.description}")

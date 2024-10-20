@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict, Union
 
-
 """
 Format of PullRequestData:
 {
@@ -34,10 +33,12 @@ Format of PullRequestData:
 }
 
 """
+
+
 @dataclass
 class PullRequestData:
     title: str
     description: str
-   
-    commit_messages: Dict[str, str] 
+
+    commit_messages: Dict[str, str]
     files_changes: Dict[str, Dict[str, Union[str, int]]]

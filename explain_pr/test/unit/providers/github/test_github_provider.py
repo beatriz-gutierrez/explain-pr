@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from explain_pr.providers.github.github_provider import GitHubProvider
 
@@ -7,14 +8,12 @@ from explain_pr.providers.github.github_provider import GitHubProvider
 class TestGitHubProvider:
 
     @pytest.fixture(autouse=True)
-    def setup_function(self):
+    def setup_function(self) -> None:
         self.mock_request = patch("explain_pr.providers.github.github_provider.requests").start()
-        
+
         responses = [
             MagicMock(
-                json=MagicMock(
-                    return_value={"title": "PR Title", "body": "PR Description"}
-                ),
+                json=MagicMock(return_value={"title": "PR Title", "body": "PR Description"}),
             ),
             MagicMock(
                 json=MagicMock(
@@ -59,17 +58,15 @@ class TestGitHubProvider:
         self.mock_request.get.side_effect = responses
 
     @pytest.fixture(autouse=True)
-    def teardown_function(self):
+    def teardown_function(self) -> None:
         self.mock_request.reset_mock()
 
-    def test_get_pull_request_data_with_valid_pr_number(self):
+    def test_get_pull_request_data_with_valid_pr_number(self) -> None:
         # ARRANGE
         git_provider = GitHubProvider()
-       
+
         # ACT
-        pr_data, pr_analytics = git_provider.get_pull_request_data(
-            "owner1", "repository1", 1
-        )
+        pr_data, pr_analytics = git_provider.get_pull_request_data("owner1", "repository1", 1)
 
         # ASSERT
         assert pr_data.title == "PR Title"

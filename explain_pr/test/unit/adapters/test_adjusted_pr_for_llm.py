@@ -1,14 +1,16 @@
-import pytest
 from unittest.mock import MagicMock
 
-from explain_pr.providers.github.pull_request_data import PullRequestData
-from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
+import pytest
+
 from explain_pr.adapters.adjusted_pull_request_for_llm import adjust_patch_data_size
+from explain_pr.providers.github.pull_request_analytics import PullRequestAnalytics
+from explain_pr.providers.github.pull_request_data import PullRequestData
+
 
 class TestAdjustedPullRequestForLlm:
 
     @pytest.fixture(autouse=True)
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.mock_pull_request_data = MagicMock(spec=PullRequestData)
         self.mock_pull_request_data.title = "Mock PR Title"
         self.mock_pull_request_data.description = "Mock PR Description"
@@ -58,56 +60,47 @@ class TestAdjustedPullRequestForLlm:
         }
 
     @pytest.fixture(autouse=True)
-    def teardown_method(self):
+    def teardown_method(self) -> None:
         self.mock_pull_request_data.reset_mock()
         self.mock_pull_request_analytics.reset_mock()
 
-    def test_adjust_patch_data_size_with_pr_smaller_than_limit_will_not_adjustt(self):
+    def test_adjust_patch_data_size_with_pr_smaller_than_limit_will_not_adjustt(
+        self,
+    ) -> None:
         # ARRANGE
         max_tokens = 100000
 
         # ACT
-        result = adjust_patch_data_size(
-            self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens
-        )
+        result = adjust_patch_data_size(self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens)
 
         # ASSERT
-        assert (
-            len(
-                [
-                    file
-                    for file in result.files_changes.values()
-                    if file["changes_patch"] == ""
-                ]
-            )
-            == 0
-        )
+        assert len([file for file in result.files_changes.values() if file["changes_patch"] == ""]) == 0
 
-    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_all_changes(self):
+    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_all_changes(
+        self,
+    ) -> None:
         # ARRANGE
         max_tokens = 10
 
         # ACT
-        result = adjust_patch_data_size(
-            self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens
-        )
+        result = adjust_patch_data_size(self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens)
 
         # ASSERT
         assert result.title == self.mock_pull_request_data.title
-        assert result.description == "" 
-        assert not result.commit_messages 
-        assert not result.files_changes 
+        assert result.description == ""
+        assert not result.commit_messages
+        assert not result.files_changes
 
-    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_some_changes_patch(self):
+    def test_adjust_patch_data_size_with_pr_bigger_than_limit_will_skip_some_changes_patch(
+        self,
+    ) -> None:
         # ARRANGE
         max_tokens = 50
 
         # ACT
-        result = adjust_patch_data_size(
-            self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens
-        )
+        result = adjust_patch_data_size(self.mock_pull_request_data, self.mock_pull_request_analytics, max_tokens)
         # ASSERT
         assert result.title == self.mock_pull_request_data.title
         assert result.description == self.mock_pull_request_data.description
         assert result.commit_messages == self.mock_pull_request_data.commit_messages
-        assert len([file for file in result.files_changes.values() if file["changes_patch"]==""]) > 0
+        assert len([file for file in result.files_changes.values() if file["changes_patch"] == ""]) > 0
